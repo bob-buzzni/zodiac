@@ -6,6 +6,7 @@
 - setup postgresql in  `.env` 
 - yarn
 - npx prisma db push
+- npx prisma db seed // 샘플 데이터 필요시
 
 ## Stack
 - NextJS 13 (beta)
