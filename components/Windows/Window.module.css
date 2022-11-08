@@ -1,0 +1,9 @@
+.container {
+  @apply bg-white flex flex-col w-full h-full;
+  min-width: 480px;
+  min-height: 320px;
+
+  /* * Viewport * */
+  &__viewport {
+  }
+}

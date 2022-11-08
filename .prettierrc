@@ -1,0 +1,17 @@
+{
+  "tabWidth": 2,
+  "semi": true,
+  "trailingComma": "es5",
+  "singleQuote": true,
+  "cursorOffset": -1,
+  "endOfLine": "lf",
+  "printWidth": 100,
+  "overrides": [
+    {
+      "files": ["prisma/seed.ts"],
+      "options": {
+        "printWidth": 140
+      }
+    }
+  ]
+}

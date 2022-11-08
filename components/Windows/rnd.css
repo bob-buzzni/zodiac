@@ -1,0 +1,10 @@
+.react-draggable {
+  @apply drop-shadow-md rounded-md border border-solid overflow-hidden;
+  border-color: #3b140b;
+  z-index: 2;
+  transition: box-shadow 0.2s;
+}
+.react-draggable.active {
+  @apply drop-shadow-2xl;
+  z-index: 999;
+}

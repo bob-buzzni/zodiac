@@ -1,0 +1,11 @@
+.container {
+  @apply inline-flex p-4;
+}
+
+.button {
+  @apply bg-transparent border-0 flex flex-col p-2;
+  & > span {
+    @apply w-full text-center mt-2;
+    text-shadow: 1px 1px 1px white;
+  }
+}

@@ -1,0 +1,26 @@
+.container {
+  height: 48px;
+  background-color: rgba(59, 20, 11, 0.85);
+  backdrop-filter: blur(20px);
+  position: relative;
+  z-index: 2;
+  display: flex;
+  gap: 6px;
+  padding: 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.button {
+  padding: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 4px;
+  opacity: 0.6;
+  background: transparent;
+  border: 0;
+  transition: opacity 0.2s;
+}
+
+.button.active {
+  opacity: 1;
+}

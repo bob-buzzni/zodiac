@@ -1,0 +1,37 @@
+.container {
+  @apply flex cursor-move items-center p-2;
+  background-color: #015468;
+}
+
+.space {
+  @apply flex-1;
+}
+
+.label {
+  @apply m-0 p-0 flex items-center;
+  span {
+    @apply text-white ml-2;
+    font-size: 14px;
+  }
+}
+
+.actions {
+  @apply flex gap-2;
+  & > button {
+    @apply block border-none rounded-md;
+    width: 12px;
+    height: 12px;
+    font-size: 0;
+    line-height: 0;
+  }
+}
+
+.close {
+  background-color: #b81e04;
+}
+.minimum {
+  background-color: #feb24b;
+}
+.maximum {
+  background-color: #54c091;
+}

@@ -1,0 +1,4 @@
+.container {
+  @apply flex-1 w-full;
+  height: calc(100% - 32px);
+}

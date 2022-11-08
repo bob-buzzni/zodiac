@@ -1,0 +1,38 @@
+.container {
+  @apply p-2;
+}
+.item {
+  @apply inline-flex flex-col bg-transparent border-0 text-center;
+
+  &::before {
+    @apply flex bg-no-repeat bg-cover;
+    content: '';
+    width: 96px;
+    height: 96px;
+  }
+
+  & > span {
+    @apply text-ellipsis overflow-hidden break-words mx-auto;
+    width: 84px;
+    font-size: 14px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+}
+
+body > .item {
+  z-index: 99999;
+  @apply bg-white drop-shadow-lg rounded-md;
+}
+
+.directory {
+  &::before {
+    background-image: url('/icons/folder.png');
+  }
+}
+.file {
+  &::before {
+    background-image: url('/icons/misc.png');
+  }
+}
