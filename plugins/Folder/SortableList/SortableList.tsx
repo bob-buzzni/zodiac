@@ -14,8 +14,15 @@ const Item: any = SortableElement(({ value, onClick = () => {} }: ItemType) => (
       'sortable--item'
     )}
     onClick={onClick.bind(null, value)}
-    {...(value.isDirectory() ? {} : { 'data-extension': (value as any).extension() })}
+    {...(value.isDirectory()
+      ? {}
+      : { 'data-extension': (value as any).extension() })}
   >
+    <i
+      className={clsx(
+        value.isDirectory() ? `fa-solid fa-folder-closed` : `fa-regular fa-file`
+      )}
+    />
     <span>{value.subject}</span>
   </div>
 ));
@@ -38,6 +45,9 @@ export default (props: any) => {
   const { onChanged = () => {}, ...rest } = props;
   const handleChanged = ({ oldIndex, newIndex }: any) => {
     onChanged([oldIndex, newIndex]);
+    Array.from(document.querySelectorAll('body > .sortable--item')).forEach((el) => {
+      el.parentNode?.removeChild(el);
+    });
   };
   return <List axis="xy" distance={1} {...props} onSortEnd={handleChanged} />;
 };

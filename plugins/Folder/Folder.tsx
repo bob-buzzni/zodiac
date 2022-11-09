@@ -17,6 +17,7 @@ type PropsType = {
 type ParamsType = Partial<{ type: string; pid: number; depth: number }>;
 
 function Folder({ args }: PropsType) {
+  const [state, setState] = useState({ loading: true });
   const [data, setData] = useState<Node[]>([]);
 
   const { history$ } = useContext(Context);
@@ -26,7 +27,6 @@ function Folder({ args }: PropsType) {
     //* Double click
     if (e.detail === 2) {
       if (node.isDirectory()) {
-        // fetch$.next({ pid: node.id });
         history$.next({ action: 'push', args: { pid: node.id } });
       } else {
         action$.next({ type: FolderEvent.EXECUTE, data: node });
@@ -43,6 +43,7 @@ function Folder({ args }: PropsType) {
   const init = () => {
     const subscription = fetch$
       .pipe(
+        Rx.tap(() => setState({ loading: true })),
         Rx.switchMap((value) => {
           const { type, pid: parent_id, depth } = value;
           return fromFetch(
@@ -56,7 +57,8 @@ function Folder({ args }: PropsType) {
             }),
             Rx.map((v) => transform(v))
           );
-        })
+        }),
+        Rx.tap(() => setState({ loading: false }))
       )
       .subscribe(setData);
 
@@ -74,11 +76,13 @@ function Folder({ args }: PropsType) {
   return (
     <div className={styles.container}>
       <Toolbar />
-      <SortableList
-        items={data}
-        onClick={handleClick}
-        onChanged={handleChanged}
-      />
+      {!state.loading ? (
+        <SortableList
+          items={data}
+          onClick={handleClick}
+          onChanged={handleChanged}
+        />
+      ) : null}
     </div>
   );
 }

@@ -1,7 +1,7 @@
-import styles from './Titlebar.module.css';
-import { exec$, ExecType } from '../../store';
-import Image from 'next/image';
+import clsx from 'clsx';
 import { getPlugin } from '../../plugins';
+import { exec$, ExecType } from '../../store';
+import styles from './Titlebar.module.css';
 type PropsType = {
   exec: ExecType;
   className?: string;
@@ -16,16 +16,28 @@ function Titlebar({ exec, className = '' }: PropsType) {
 
   const plugin = getPlugin(exec.app);
   return (
-    <div className={styles.container}>
+    <div className={clsx('titlebar', styles.container)}>
       <label className={styles.label}>
-        <Image src={plugin!.icon} alt={plugin!.subject} width={16} height={16} />
+        <i className={plugin!.icon} style={{color: plugin!.color}}></i>
         <span>{plugin!.subject}</span>
       </label>
       <span className={styles.space} />
       <div className={styles.actions}>
-        <button type="button" className={styles.close} onClick={handleClose}></button>
-        <button type="button" className={styles.minimum} onClick={handleMinimum}></button>
-        <button type="button" className={styles.maximum} onClick={handleMaximum}></button>
+        <button
+          type="button"
+          className={styles.close}
+          onClick={handleClose}
+        ></button>
+        <button
+          type="button"
+          className={styles.minimum}
+          onClick={handleMinimum}
+        ></button>
+        <button
+          type="button"
+          className={styles.maximum}
+          onClick={handleMaximum}
+        ></button>
       </div>
     </div>
   );

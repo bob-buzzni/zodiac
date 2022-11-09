@@ -4,11 +4,14 @@
 .item {
   @apply inline-flex flex-col bg-transparent border-0 text-center;
 
-  &::before {
-    @apply flex bg-no-repeat bg-cover;
-    content: '';
+  & > * {
+    @apply pointer-events-none;
+  }
+  & > i {
+    @apply flex bg-no-repeat bg-cover items-center justify-center;
     width: 96px;
     height: 96px;
+    font-size: 5rem;
   }
 
   & > span {
@@ -27,12 +30,12 @@ body > .item {
 }
 
 .directory {
-  &::before {
-    background-image: url('/icons/folder.png');
+  & > i {
+    color: #f39025;
   }
 }
 .file {
-  &::before {
-    background-image: url('/icons/misc.png');
+  & > i {
+    color: #005466;
   }
 }

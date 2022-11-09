@@ -29,13 +29,18 @@ const getBound = () => {
   ) as SizeType;
 };
 const setBound = (size: Partial<SizeType>) => {
-  window.sessionStorage.setItem(sessionState, JSON.stringify(R.mergeDeepLeft(size, getBound())));
+  window.sessionStorage.setItem(
+    sessionState,
+    JSON.stringify(R.mergeDeepLeft(size, getBound()))
+  );
 };
 
 export default function Window({ exec, children }: PropsType) {
   const [state, setState] = useState({ active: false });
 
-  const [bound] = useState(R.evolve({ x: R.add(32), y: R.add(32) }, getBound()));
+  const [bound] = useState(
+    R.evolve({ x: R.add(32), y: R.add(32) }, getBound())
+  );
   const handleActive = () => {
     action$.next({ type: WindowEvent.ACTIVATE, data: [exec.id] });
   };
@@ -68,8 +73,8 @@ export default function Window({ exec, children }: PropsType) {
   return (
     <Rnd
       id={exec.id}
-      className={clsx('titlebar', { active: state.active })}
-      dragHandleClassName="titlebar"
+      className={clsx({ active: state.active })}
+      dragHandleClassName={'titlebar'}
       minWidth={482}
       minHeight={322}
       default={bound}

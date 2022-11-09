@@ -6,6 +6,12 @@
   @apply bg-transparent border-0 flex flex-col p-2;
   & > span {
     @apply w-full text-center mt-2;
-    text-shadow: 1px 1px 1px white;
+    text-shadow: -2px -2px 0 #fff, 2px -2px 0 #fff, -2px 2px 0 #fff,
+      2px 2px 0 #fff;
+  }
+  & > i {
+    font-size: 3.5rem;
+    text-shadow: -2px -2px 0 #fff, 2px -2px 0 #fff, -2px 2px 0 #fff,
+      2px 2px 0 #fff;
   }
 }

@@ -11,14 +11,16 @@
 }
 
 .button {
-  padding: 0;
+  @apply bg-transparent border-0 p-0;
   width: 36px;
   height: 36px;
-  border-radius: 4px;
   opacity: 0.6;
-  background: transparent;
-  border: 0;
   transition: opacity 0.2s;
+  & > i {
+    font-size: 1.5rem;
+    text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff,
+      1px 1px 0 #fff;
+  }
 }
 
 .button.active {

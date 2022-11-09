@@ -13,6 +13,10 @@
     @apply text-white ml-2;
     font-size: 14px;
   }
+  i {
+    text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff,
+      1px 1px 0 #fff;
+  }
 }
 
 .actions {

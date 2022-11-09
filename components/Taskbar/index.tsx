@@ -1,12 +1,11 @@
-import styles from './Taskbar.module.css';
 import clsx from 'clsx';
-import Image from 'next/image';
 import * as R from 'ramda';
 import { useEffect, useState } from 'react';
 import * as Rx from 'rxjs';
 import { WindowEvent } from '~/constants';
 import { getPlugin } from '~/plugins';
-import { action$, exec$, task$, ExecType } from '~/store';
+import { action$, exec$, ExecType, task$ } from '~/store';
+import styles from './Taskbar.module.css';
 export default function Taskbar() {
   const [items, setItems] = useState<ExecType[]>([]);
   const [state, setState] = useState({ activate: '' });
@@ -62,13 +61,16 @@ export default function Taskbar() {
 
         return info ? (
           <button
-            className={clsx(styles.button, v.id === state.activate && styles.active)}
+            className={clsx(
+              styles.button,
+              v.id === state.activate && styles.active
+            )}
             type="button"
             key={v.id}
             title={info.description}
             onClick={handleClick.bind(null, v.id)}
           >
-            <Image src={info.icon} alt={info.subject} width={32} height={32} />
+            <i className={info.icon} style={{ color: info.color }}></i>
           </button>
         ) : null;
       })}
