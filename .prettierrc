@@ -5,7 +5,6 @@
   "singleQuote": true,
   "cursorOffset": -1,
   "endOfLine": "lf",
-  "printWidth": 100,
   "overrides": [
     {
       "files": ["prisma/seed.ts"],
