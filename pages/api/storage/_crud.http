@@ -1,0 +1,41 @@
+GET http://localhost:3000/api/storage
+Content-Type: application/json
+
+{
+
+}
+
+###
+
+GET http://localhost:3000/api/storage/2
+Content-Type: application/json
+
+
+###
+
+POST http://localhost:3000/api/storage
+Content-Type: application/json
+
+{
+    "parent_id": 7,
+    "type": "file",
+    "subject":"cover.jpg"
+}
+
+###
+
+PUT http://localhost:3000/api/storage/2
+Content-Type: application/json
+
+{   
+    "subject": "데스크톱"
+}
+
+###
+
+DELETE  http://localhost:3000/api/storage/10
+Content-Type: application/json
+
+{
+    
+}

@@ -1,10 +1,16 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "esModuleInterop": true,
@@ -15,16 +21,31 @@
     "jsx": "preserve",
     "incremental": true,
     "baseUrl": "./",
+    "strictPropertyInitialization": false,
     "plugins": [
       {
         "name": "next"
       }
     ],
     "paths": {
-      "~/*": ["./*"]
+      "~/*": [
+        "./*"
+      ]
     },
-    "types": ["webpack-env"]
+    "types": [
+      "webpack-env"
+    ]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.module.css", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules", ".history", ".next"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.module.css",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    ".history",
+    ".next"
+  ]
 }

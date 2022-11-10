@@ -63,8 +63,11 @@ function Folder({ args }: PropsType) {
       .subscribe(setData);
 
     history$.pipe(Rx.distinctUntilChanged()).subscribe((value) => {
-      const { args } = value;
-      fetch$.next(args);
+      const { action } = value;
+      if (action === 'push') {
+        const { args } = value;
+        fetch$.next(args);
+      }
     });
     history$.next({ action: 'initial', args: { pid: 1 } });
 
@@ -92,7 +95,7 @@ type ArgType = {
 };
 
 export default function FolderContext(props: PropsType) {
-  const [history$] = useState(new Rx.Subject<HistoryType<ArgType>>());
+  const [history$] = useState(new Rx.Subject<HistoryType>());
 
   return (
     <Context.Provider value={{ history$ }}>
