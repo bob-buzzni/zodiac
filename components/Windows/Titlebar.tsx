@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import { getPlugin } from '../../plugins';
 import { exec$, ExecType } from '../../store';
 import styles from './Titlebar.module.css';
+import Image from 'next/image';
 type PropsType = {
   exec: ExecType;
   className?: string;
@@ -18,7 +19,8 @@ function Titlebar({ exec, className = '' }: PropsType) {
   return (
     <div className={clsx('titlebar', styles.container)}>
       <label className={styles.label}>
-        <i className={plugin!.icon} style={{color: plugin!.color}}></i>
+        
+        <Image src={plugin!.icon} alt={plugin!.subject} width={16} height={16} />
         <span>{plugin!.subject}</span>
       </label>
       <span className={styles.space} />

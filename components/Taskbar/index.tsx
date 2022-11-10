@@ -6,6 +6,7 @@ import { WindowEvent } from '~/constants';
 import { getPlugin } from '~/plugins';
 import { action$, exec$, ExecType, task$ } from '~/store';
 import styles from './Taskbar.module.css';
+import Image from 'next/image';
 export default function Taskbar() {
   const [items, setItems] = useState<ExecType[]>([]);
   const [state, setState] = useState({ activate: '' });
@@ -70,7 +71,7 @@ export default function Taskbar() {
             title={info.description}
             onClick={handleClick.bind(null, v.id)}
           >
-            <i className={info.icon} style={{ color: info.color }}></i>
+            <Image src={info.icon} alt={info.subject} width={32} height={32} />
           </button>
         ) : null;
       })}

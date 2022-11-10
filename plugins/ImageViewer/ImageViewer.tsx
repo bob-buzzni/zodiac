@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Node } from '~/utils/storage';
 import styles from './ImageViewer.module.css';
-
+import './global.css';
 type ImageType = {
   url: string;
   width: number;

@@ -5,8 +5,7 @@ import { install } from '~/plugins';
 import { FolderEvent } from '~/constants';
 
 install('image-viewer', {
-  icon: 'fa-solid fa-photo-film',
-  color: '#005466',
+  icon: '/icons/picture.png',
   subject: '이미지 뷰어',
   description: '이미지를 미리 볼 수 있습니다.',
   component,

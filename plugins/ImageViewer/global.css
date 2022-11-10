@@ -1,0 +1,5 @@
+[data-extension='jpg'] {
+  &::before {
+    background-image: url('/icons/image.png');
+  }
+}

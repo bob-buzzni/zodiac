@@ -2,20 +2,20 @@
   @apply p-2;
 }
 .item {
-  @apply inline-flex flex-col bg-transparent border-0 text-center;
+  @apply inline-flex flex-col bg-transparent border-0 justify-center text-center;
 
   & > * {
     @apply pointer-events-none;
   }
-  & > i {
-    @apply flex bg-no-repeat bg-cover items-center justify-center;
-    width: 96px;
-    height: 96px;
-    font-size: 5rem;
+  &::before {
+    @apply flex bg-no-repeat bg-contain mx-auto;
+    content: '';
+    width: 64px;
+    height: 64px;
   }
 
   & > span {
-    @apply text-ellipsis overflow-hidden break-words mx-auto;
+    @apply text-ellipsis overflow-hidden break-words mx-auto py-1;
     width: 84px;
     font-size: 14px;
     display: -webkit-box;
@@ -30,12 +30,12 @@ body > .item {
 }
 
 .directory {
-  & > i {
-    color: #f39025;
+  &::before {
+    background-image: url('/icons/directory.png');
   }
 }
 .file {
-  & > i {
-    color: #005466;
+  &::before {
+    background-image: url('/icons/file.png');
   }
 }

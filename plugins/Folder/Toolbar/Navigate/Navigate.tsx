@@ -9,17 +9,15 @@ type StackType<T> = {
   prev: T[];
   curr: T;
   next: T[];
-  action: string;
+  action: HistoryType['action'];
 };
 
 function Navigate({}: PropsType) {
   const [state, setState] = useState({ isPrevable: false, isNextable: false });
   const { history$ } = useContext(Context);
 
-  const [navigate$] = useState(
-    new Rx.Subject<HistoryType<{ [key: string]: any }>>()
-  );
-  const handleClick = (action: 'prev' | 'next') => {
+  const [navigate$] = useState(new Rx.Subject<HistoryType>());
+  const handleClick = (action: HistoryType['action']) => {
     navigate$.next({ action, args: {} });
   };
 
@@ -33,22 +31,22 @@ function Navigate({}: PropsType) {
             const { action } = cur;
             // 초기화
             if (cur.action === 'initial') {
-              return { next: [], prev: [], curr: cur.args!, action };
+              return { next: [], prev: [], curr: cur.args, action };
             }
 
-            if (cur.action === 'next') {
+            if (cur.action === 'forward') {
               return {
                 next: R.drop(1, next),
                 prev: R.append(curr, prev),
-                curr: R.head(next)!,
+                curr: R.head(next),
                 action,
               };
             }
-            if (cur.action === 'prev') {
+            if (cur.action === 'backward') {
               return {
                 next: R.prepend(curr, next),
                 prev: R.dropLast(1, prev),
-                curr: R.last(prev)!,
+                curr: R.last(prev),
                 action,
               };
             }
@@ -56,7 +54,7 @@ function Navigate({}: PropsType) {
               return {
                 next: [],
                 prev: R.append(curr, prev),
-                curr: cur.args!,
+                curr: cur.args,
                 action,
               };
             }
@@ -67,14 +65,14 @@ function Navigate({}: PropsType) {
             prev: [],
             curr: {},
             next: [],
-            action: '',
+            action: 'initial',
           } as StackType<any>
         ),
 
         //* history update
         Rx.tap((value) => {
           const { action, curr: args } = value;
-          if (['prev', 'next'].includes(action)) {
+          if (['backward', 'forward'].includes(action)) {
             history$.next({ action, args });
           }
         })
@@ -103,7 +101,7 @@ function Navigate({}: PropsType) {
       <button
         type="button"
         className={styles.button}
-        onClick={handleClick.bind(null, 'prev')}
+        onClick={handleClick.bind(null, 'backward')}
         disabled={!state.isPrevable}
       >
         <i className="fa-solid fa-arrow-left" />
@@ -111,7 +109,7 @@ function Navigate({}: PropsType) {
       <button
         type="button"
         className={styles.button}
-        onClick={handleClick.bind(null, 'next')}
+        onClick={handleClick.bind(null, 'forward')}
         disabled={!state.isNextable}
       >
         <i className="fa-solid fa-arrow-right" />

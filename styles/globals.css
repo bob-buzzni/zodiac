@@ -7,15 +7,9 @@ body {
   padding: 0;
 }
 body {
-  background: rgb(254, 178, 75);
-  background: linear-gradient(
-    110deg,
-    rgba(254, 178, 75, 1) 0%,
-    rgba(251, 154, 2, 1) 25%,
-    rgba(192, 33, 3, 1) 50%,
-    rgba(67, 20, 9, 1) 75%,
-    rgba(95, 199, 156, 1) 100%
-  );
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svgjs='http://svgjs.com/svgjs' width='1440' height='560' preserveAspectRatio='none' viewBox='0 0 1440 560'%3e%3cg mask='url(%26quot%3b%23SvgjsMask1013%26quot%3b)' fill='none'%3e%3crect width='1440' height='560' x='0' y='0' fill='rgba(234%2c 160%2c 97%2c 1)'%3e%3c/rect%3e%3cpath d='M 0%2c108 C 96%2c92.8 288%2c31.6 480%2c32 C 672%2c32.4 768%2c111.8 960%2c110 C 1152%2c108.2 1344%2c40.4 1440%2c23L1440 560L0 560z' fill='rgba(243%2c 217%2c 170%2c 1)'%3e%3c/path%3e%3cpath d='M 0%2c219 C 96%2c198.6 288%2c119.8 480%2c117 C 672%2c114.2 768%2c203.8 960%2c205 C 1152%2c206.2 1344%2c139.4 1440%2c123L1440 560L0 560z' fill='rgba(28%2c 98%2c 131%2c 1)'%3e%3c/path%3e%3cpath d='M 0%2c313 C 36%2c304 108%2c263.8 180%2c268 C 252%2c272.2 288%2c337.4 360%2c334 C 432%2c330.6 468%2c259.8 540%2c251 C 612%2c242.2 648%2c288 720%2c290 C 792%2c292 828%2c259.8 900%2c261 C 972%2c262.2 1008%2c299.4 1080%2c296 C 1152%2c292.6 1188%2c245.8 1260%2c244 C 1332%2c242.2 1404%2c278.4 1440%2c287L1440 560L0 560z' fill='rgba(20%2c 38%2c 73%2c 1)'%3e%3c/path%3e%3cpath d='M 0%2c430 C 57.6%2c415.4 172.8%2c361.2 288%2c357 C 403.2%2c352.8 460.8%2c405.8 576%2c409 C 691.2%2c412.2 748.8%2c368.4 864%2c373 C 979.2%2c377.6 1036.8%2c432.6 1152%2c432 C 1267.2%2c431.4 1382.4%2c382.4 1440%2c370L1440 560L0 560z' fill='rgba(207%2c 54%2c 34%2c 1)'%3e%3c/path%3e%3cpath d='M 0%2c558 C 96%2c540.6 288%2c474.6 480%2c471 C 672%2c467.4 768%2c544 960%2c540 C 1152%2c536 1344%2c468.8 1440%2c451L1440 560L0 560z' fill='rgba(231%2c 102%2c 53%2c 1)'%3e%3c/path%3e%3c/g%3e%3cdefs%3e%3cmask id='SvgjsMask1013'%3e%3crect width='1440' height='560' fill='white'%3e%3c/rect%3e%3c/mask%3e%3c/defs%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 [data-nextjs-scroll-focus-boundary] {

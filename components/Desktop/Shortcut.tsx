@@ -2,6 +2,7 @@ import { MouseEvent, useEffect } from 'react';
 import { getPlugin } from '~/plugins';
 import { exec$ } from '~/store';
 import styles from './Shortcut.module.css';
+import Image from 'next/image';
 export default function Shortcut() {
   const FOLDER = getPlugin('folder');
 
@@ -28,7 +29,12 @@ export default function Shortcut() {
         className={styles.button}
         onClick={handleClick.bind(null, 'folder')}
       >
-        <i className={FOLDER!.icon} style={{ color: FOLDER!.color }}></i>
+        <Image
+          src={FOLDER!.icon}
+          alt={FOLDER!.subject}
+          width={48}
+          height={48}
+        />
         <span>{FOLDER!.subject}</span>
       </button>
     </div>
