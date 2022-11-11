@@ -3,6 +3,7 @@ export const WindowEvent = {
 };
 
 export const FolderEvent = {
+  ENTER: 'folder.enter',
   LISTING: 'folder.listing',
   SELECTED: 'folder.selected',
   EXECUTE: 'folder.execute',

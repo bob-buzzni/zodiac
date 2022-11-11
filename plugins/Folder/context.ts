@@ -1,22 +1,21 @@
 import { createContext } from 'react';
 import * as Rx from 'rxjs';
 
-type BackwardType = {
-  action: 'backward';
-};
-type ForwardType = {
-  action: 'forward';
-};
-type PushType = {
-  action: 'push';
-  args: any;
-};
-type InitialType = {
-  action: 'initial';
-  args: any;
-};
+export const HistoryEvent = {
+  BACKWARD: 'history.backward',
+  FORWARD: 'history.forward',
+  PUSH: 'history.push',
+  INITIAL: 'history.initial',
+} as const;
 
-export type HistoryType = BackwardType | ForwardType | PushType | InitialType;
+export type HistoryType = {
+  type:
+    | typeof HistoryEvent.BACKWARD
+    | typeof HistoryEvent.FORWARD
+    | typeof HistoryEvent.PUSH
+    | typeof HistoryEvent.INITIAL;
+  args: { [key: string]: any };
+};
 
 export default createContext({
   history$: new Rx.Subject<HistoryType>(),

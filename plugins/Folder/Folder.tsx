@@ -1,7 +1,7 @@
 import qs from 'qs';
 import * as R from 'ramda';
-import { MouseEvent, useEffect, useState, useContext } from 'react';
 import * as Rx from 'rxjs';
+import { MouseEvent, useEffect, useState, useContext } from 'react';
 import { fromFetch } from 'rxjs/fetch';
 import { FolderEvent } from '~/constants';
 import { action$ } from '~/store';
@@ -9,7 +9,7 @@ import { Node, transform } from '~/utils/storage';
 import Toolbar from './Toolbar';
 import SortableList from './SortableList';
 import styles from './Folder.module.css';
-import Context, { HistoryType } from './context';
+import Context, { HistoryEvent, HistoryType } from './context';
 type PropsType = {
   args: string[];
 };
@@ -24,10 +24,16 @@ function Folder({ args }: PropsType) {
   const [fetch$] = useState(new Rx.Subject<ParamsType>());
 
   const handleClick = (node: Node, e: MouseEvent<HTMLButtonElement>) => {
+    //* Single click
+    if (e.detail === 1) {
+      action$.next({ type: FolderEvent.SELECTED, data: node });
+    }
+
     //* Double click
     if (e.detail === 2) {
       if (node.isDirectory()) {
-        history$.next({ action: 'push', args: { pid: node.id } });
+        action$.next({ type: FolderEvent.ENTER, data: node });
+        history$.next({ type: HistoryEvent.PUSH, args: { pid: node.id } });
       } else {
         action$.next({ type: FolderEvent.EXECUTE, data: node });
       }
@@ -41,20 +47,27 @@ function Folder({ args }: PropsType) {
   };
 
   const init = () => {
+    // * PID 변경시 갱신
     const subscription = fetch$
       .pipe(
         Rx.tap(() => setState({ loading: true })),
         Rx.switchMap((value) => {
           const { type, pid: parent_id, depth } = value;
           return fromFetch(
-            '/api/storage/list?' +
-              qs.stringify({ type, parent_id, depth }, { skipNulls: true })
+            '/api/storage' +
+              qs.stringify(
+                { type, parent_id, depth },
+                { addQueryPrefix: true, skipNulls: true }
+              )
           ).pipe(
             Rx.switchMap((res) => res.json()),
             Rx.takeUntil(Rx.timer(5e3)),
             Rx.tap((v) => {
+              // * 목록 업데이트 전파
               action$.next({ type: FolderEvent.LISTING, data: v });
             }),
+
+            // * item to Node
             Rx.map((v) => transform(v))
           );
         }),
@@ -63,13 +76,10 @@ function Folder({ args }: PropsType) {
       .subscribe(setData);
 
     history$.pipe(Rx.distinctUntilChanged()).subscribe((value) => {
-      const { action } = value;
-      if (action === 'push') {
-        const { args } = value;
-        fetch$.next(args);
-      }
+      const { args = {} } = value;
+      fetch$.next(args);
     });
-    history$.next({ action: 'initial', args: { pid: 1 } });
+    history$.next({ type: HistoryEvent.INITIAL, args: { pid: 1 } });
 
     return () => {
       subscription.unsubscribe();
@@ -89,10 +99,6 @@ function Folder({ args }: PropsType) {
     </div>
   );
 }
-
-type ArgType = {
-  pid: number;
-};
 
 export default function FolderContext(props: PropsType) {
   const [history$] = useState(new Rx.Subject<HistoryType>());
