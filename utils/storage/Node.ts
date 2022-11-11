@@ -15,6 +15,8 @@ export default class Node {
   updated_at: Date = new Date();
   children: Node[] = [];
 
+  // state
+  isSelected: boolean = false;
   constructor(item: typeof Node) {
     const instance: typeof Node & { [key: string]: any } = item;
 

@@ -1,5 +1,5 @@
 .container {
-  @apply p-2;
+  @apply p-2 gap-2;
 }
 .item {
   @apply inline-flex flex-col bg-transparent border-0 justify-center text-center;
@@ -38,4 +38,7 @@ body > .item {
   &::before {
     background-image: url('/icons/file.png');
   }
+}
+.item.is-selected {
+  background-color: rgba(0, 84, 102, 0.2);
 }

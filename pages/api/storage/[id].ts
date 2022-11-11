@@ -1,17 +1,19 @@
 import { PrismaClient } from '@prisma/client';
 import * as R from 'ramda';
+import list from './list';
 const DB = new PrismaClient();
 
 import {
   Body,
   createHandler,
   Delete,
-  Get, Put,
+  Get,
+  Put,
   Req,
-  ValidationPipe
+  ValidationPipe,
 } from 'next-api-decorators';
 
-import { NextApiRequest } from 'next';
+import type { NextApiRequest } from 'next';
 
 class Field {
   parent_id: number;
@@ -45,12 +47,22 @@ class Handler {
   @Delete()
   async destroy(@Req() req: NextApiRequest) {
     const { id } = req.query;
+    const record = await list({ parent_id: Number(id), depth: 999 });
 
-    return await DB.storage.delete({
-      where: {
-        id: Number(id),
-      },
-    });
+    const result = await Promise.all(
+      [...(record as any[]).map((v) => v.id), id].map((v) => {
+        return new Promise((resolve) => {
+          DB.storage
+            .delete({
+              where: {
+                id: Number(v),
+              },
+            })
+            .then(resolve);
+        });
+      })
+    );
+    return result;
   }
 }
 

@@ -2,7 +2,7 @@ import * as R from 'ramda';
 import component from './ImageViewer';
 import { exec$, action$ } from '~/store';
 import { install } from '~/plugins';
-import { FolderEvent } from '~/constants';
+import { FolderEvent } from '../Folder/event';
 
 install('image-viewer', {
   icon: '/icons/picture.png',

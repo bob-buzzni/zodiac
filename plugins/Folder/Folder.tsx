@@ -3,38 +3,58 @@ import * as R from 'ramda';
 import * as Rx from 'rxjs';
 import { MouseEvent, useEffect, useState, useContext } from 'react';
 import { fromFetch } from 'rxjs/fetch';
-import { FolderEvent } from '~/constants';
+import { FolderEvent, HistoryEvent } from './event';
 import { action$ } from '~/store';
 import { Node, transform } from '~/utils/storage';
 import Toolbar from './Toolbar';
 import SortableList from './SortableList';
 import styles from './Folder.module.css';
-import Context, { HistoryEvent, HistoryType } from './context';
+import Context, { HistoryType } from './context';
 type PropsType = {
   args: string[];
 };
 
 type ParamsType = Partial<{ type: string; pid: number; depth: number }>;
-
+type StateType = {
+  loading: boolean;
+  selected: Node[];
+};
 function Folder({ args }: PropsType) {
-  const [state, setState] = useState({ loading: true });
-  const [data, setData] = useState<Node[]>([]);
+  const [state, setState] = useState<StateType>({
+    loading: true,
+    selected: [],
+  });
+  const [record, setRecord] = useState<Node[]>([]);
 
   const { history$ } = useContext(Context);
   const [fetch$] = useState(new Rx.Subject<ParamsType>());
 
-  const handleClick = (node: Node, e: MouseEvent<HTMLButtonElement>) => {
+  const handleNodeClick = (e: MouseEvent<HTMLButtonElement>, node: Node) => {
     //* Single click
     if (e.detail === 1) {
-      action$.next({ type: FolderEvent.SELECTED, data: node });
+      const selected: Node[] = !!R.count(
+        (v) => v.id === node.id,
+        state.selected
+      )
+        ? R.reject((v: Node) => v.id === node.id, state.selected)
+        : R.append(node, state.selected);
+
+      action$.next({ type: FolderEvent.SELECTED, data: selected });
     }
 
     //* Double click
     if (e.detail === 2) {
+      // * 선택 초기화
+      action$.next({ type: FolderEvent.DESELECT, data: [] });
+
       if (node.isDirectory()) {
+        // * 디렉토리 진입 알림
         action$.next({ type: FolderEvent.ENTER, data: node });
-        history$.next({ type: HistoryEvent.PUSH, args: { pid: node.id } });
+
+        // * 디렉토리 이동
+        history$.next({ type: HistoryEvent.PUSH, data: { pid: node.id } });
       } else {
+        // * 실행
         action$.next({ type: FolderEvent.EXECUTE, data: node });
       }
     }
@@ -42,15 +62,21 @@ function Folder({ args }: PropsType) {
 
   const handleChanged = (moved: number[]) => {
     const [acc, cur] = moved;
-    const res = R.move(acc, cur, data);
-    setData(() => res);
+    const res = R.move(acc, cur, record);
+    setRecord(() => res);
+  };
+
+  //* 빈공간 클릭
+  const handleClick = () => {
+    // * 선택 초기화
+    action$.next({ type: FolderEvent.DESELECT, data: [] });
   };
 
   const init = () => {
     // * PID 변경시 갱신
     const subscription = fetch$
       .pipe(
-        Rx.tap(() => setState({ loading: true })),
+        Rx.tap(() => setState((state) => ({ ...state, loading: true }))),
         Rx.switchMap((value) => {
           const { type, pid: parent_id, depth } = value;
           return fromFetch(
@@ -71,31 +97,52 @@ function Folder({ args }: PropsType) {
             Rx.map((v) => transform(v))
           );
         }),
-        Rx.tap(() => setState({ loading: false }))
+        Rx.tap(() => setState((state) => ({ ...state, loading: false })))
       )
-      .subscribe(setData);
+      .subscribe(setRecord);
 
     history$.pipe(Rx.distinctUntilChanged()).subscribe((value) => {
-      const { args = {} } = value;
-      fetch$.next(args);
+      const { data = {} } = value;
+      fetch$.next(data);
     });
-    history$.next({ type: HistoryEvent.INITIAL, args: { pid: 1 } });
 
+    subscription.add(
+      action$
+        .pipe(
+          Rx.filter(
+            (value) =>
+              value.type === FolderEvent.DESELECT ||
+              value.type === FolderEvent.SELECTED
+          ),
+          Rx.debounceTime(120)
+        )
+        .subscribe((value) => {
+          setState((state) => ({
+            ...state,
+            selected: value.type === FolderEvent.SELECTED ? value.data : [],
+          }));
+        })
+    );
+
+    history$.next({ type: HistoryEvent.INITIAL, data: { pid: 1 } });
     return () => {
       subscription.unsubscribe();
     };
   };
   useEffect(init, []);
+
   return (
-    <div className={styles.container}>
+    <div className={styles.container} onClick={handleClick}>
       <Toolbar />
       {!state.loading ? (
         <SortableList
-          items={data}
-          onClick={handleClick}
+          items={record}
+          onClick={handleNodeClick}
           onChanged={handleChanged}
         />
-      ) : null}
+      ) : (
+        <span></span>
+      )}
     </div>
   );
 }

@@ -1,26 +1,61 @@
+import { useState, useEffect, MouseEvent } from 'react';
 import styles from './SortableList.module.css';
 import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 import { Node } from '~/utils/storage';
 import clsx from 'clsx';
+import * as Rx from 'rxjs';
+import { action$ } from '~/store';
+import { FolderEvent } from '../event';
 type ItemType = {
-  value: Node;
-  onClick: (item: any) => void;
+  node: Node;
+  onClick: (e: MouseEvent<HTMLDivElement>, item: Node) => void;
 };
-const Item: any = SortableElement(({ value, onClick = () => {} }: ItemType) => (
-  <div
-    className={clsx(
-      styles.item,
-      value.isDirectory() ? styles.directory : styles.file,
-      'sortable--item'
-    )}
-    onClick={onClick.bind(null, value)}
-    {...(value.isDirectory()
-      ? {}
-      : { 'data-extension': (value as any).extension() })}
-  >
-    <span>{value.subject}</span>
-  </div>
-));
+const Item: any = SortableElement(({ node, onClick = () => {} }: ItemType) => {
+  const [state, setState] = useState({ isSelected: false });
+  const handleClck = (value: Node, e: MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+    onClick(e, value);
+  };
+
+  const init = () => {
+    const subscription = action$
+      .pipe(
+        Rx.filter(
+          (value) =>
+            value.type === FolderEvent.SELECTED ||
+            value.type === FolderEvent.DESELECT
+        )
+      )
+      .subscribe((value) => {
+        const isSelected = FolderEvent.SELECTED
+          ? value.data.some((v: Node) => v.id === node.id)
+          : false;
+        setState((state) => ({ ...state, isSelected }));
+      });
+    return () => {
+      subscription.unsubscribe();
+    };
+  };
+  useEffect(init, []);
+
+  return (
+    <div
+      id={node.id.toString()}
+      className={clsx(
+        styles.item,
+        'sortable--item',
+        node.isDirectory() ? styles.directory : styles.file,
+        { [styles['is-selected']]: state.isSelected }
+      )}
+      onClick={handleClck.bind(null, node)}
+      {...(node.isDirectory()
+        ? {}
+        : { 'data-extension': (node as any).extension() })}
+    >
+      <span>{node.subject}</span>
+    </div>
+  );
+});
 
 type ListType = {
   items: Node[];
@@ -30,7 +65,7 @@ const List = SortableContainer(({ items = [], ...rest }: ListType) => {
   return (
     <div className={styles.container}>
       {items.map((item, index: number) => (
-        <Item key={item.id} index={index} value={item} {...rest} />
+        <Item key={item.id} index={index} node={item} {...rest} />
       ))}
     </div>
   );

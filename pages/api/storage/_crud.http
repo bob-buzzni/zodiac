@@ -7,7 +7,16 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:3000/api/storage/2
+DELETE http://localhost:3000/api/storage
+Content-Type: application/json
+
+{
+    "ids": [23]
+}
+
+###
+
+GET http://localhost:3000/api/storage/11
 Content-Type: application/json
 
 
@@ -33,7 +42,7 @@ Content-Type: application/json
 
 ###
 
-DELETE  http://localhost:3000/api/storage/10
+DELETE  http://localhost:3000/api/storage/12
 Content-Type: application/json
 
 {

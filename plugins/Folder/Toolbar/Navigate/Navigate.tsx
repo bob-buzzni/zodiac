@@ -2,7 +2,8 @@ import styles from './Navigate.module.css';
 import * as R from 'ramda';
 import * as Rx from 'rxjs';
 import { useContext, useState, useEffect } from 'react';
-import Context, { HistoryEvent, HistoryType } from '../../context';
+import { HistoryEvent } from '../../event';
+import Context, { HistoryType } from '../../context';
 type PropsType = {};
 
 type StackType<T> = {
@@ -18,7 +19,7 @@ function Navigate({}: PropsType) {
 
   const [navigate$] = useState(new Rx.Subject<HistoryType>());
   const handleClick = (type: HistoryType['type']) => {
-    navigate$.next({ type, args: {} });
+    navigate$.next({ type, data: {} });
   };
 
   const init = () => {
@@ -31,7 +32,7 @@ function Navigate({}: PropsType) {
             const { type } = cur;
             // 초기화
             if (cur.type === HistoryEvent.INITIAL) {
-              return { next: [], prev: [], curr: cur.args, type };
+              return { next: [], prev: [], curr: cur.data, type };
             }
 
             if (cur.type === HistoryEvent.FORWARD) {
@@ -54,7 +55,7 @@ function Navigate({}: PropsType) {
               return {
                 next: [],
                 prev: R.append(curr, prev),
-                curr: cur.args,
+                curr: cur.data,
                 type,
               };
             }
@@ -71,9 +72,9 @@ function Navigate({}: PropsType) {
 
         //* history update
         Rx.tap((value) => {
-          const { type, curr: args } = value;
+          const { type, curr: data } = value;
           if (type === HistoryEvent.BACKWARD || type === HistoryEvent.FORWARD) {
-            history$.next({ type, args });
+            history$.next({ type, data });
           }
         })
       )
