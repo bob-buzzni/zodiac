@@ -11,7 +11,7 @@ DELETE http://localhost:3000/api/storage
 Content-Type: application/json
 
 {
-    "ids": [23]
+    "ids": [4,5]
 }
 
 ###
@@ -22,11 +22,10 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:3000/api/storage
+POST http://localhost:3000/api/storage/7
 Content-Type: application/json
 
 {
-    "parent_id": 7,
     "type": "file",
     "subject":"cover.jpg"
 }

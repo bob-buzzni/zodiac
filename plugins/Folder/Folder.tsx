@@ -78,14 +78,8 @@ function Folder({ args }: PropsType) {
       .pipe(
         Rx.tap(() => setState((state) => ({ ...state, loading: true }))),
         Rx.switchMap((value) => {
-          const { type, pid: parent_id, depth } = value;
-          return fromFetch(
-            '/api/storage' +
-              qs.stringify(
-                { type, parent_id, depth },
-                { addQueryPrefix: true, skipNulls: true }
-              )
-          ).pipe(
+          const { pid } = value;
+          return fromFetch(`/api/storage/${pid}`).pipe(
             Rx.switchMap((res) => res.json()),
             Rx.takeUntil(Rx.timer(5e3)),
             Rx.tap((v) => {

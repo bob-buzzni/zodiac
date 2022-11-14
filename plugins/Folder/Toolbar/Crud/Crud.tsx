@@ -21,8 +21,7 @@ function Crud({}: PropsType) {
     type: 'file' | 'directory';
   }) => {
     axios
-      .post('/api/storage', {
-        parent_id: state.pid,
+      .post(`/api/storage/${state.pid}`, {
         type: 'directory',
         subject: '무제',
       })
