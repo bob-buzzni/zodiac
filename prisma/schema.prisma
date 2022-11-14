@@ -13,6 +13,8 @@ datasource db {
 model Storage {
   id          Int      @id @default(autoincrement())
   parent_id   Int
+  copied_id   Int      @default(0)
+  status      String   @default("public") @db.VarChar(50)
   thumbnail   String   @db.VarChar(500)
   type        String   @default("file") @db.VarChar(30)
   subject     String   @db.VarChar(255)

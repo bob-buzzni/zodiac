@@ -43,7 +43,14 @@ function Crud({}: PropsType) {
   };
 
   // * 선택된 항목 전체 복사
-  const handleCopy = () => {};
+  const handleCopy = () => {
+    const ids = state.selected.map((node) => node.id);
+    axios
+      .post(`/api/storage`, { ids })
+      .then(() => {
+        history$.next({ type: HistoryEvent.RELOAD, data: { pid: state.pid } });
+      });
+  };
 
   // * 선택된 단일 항목 이름 변경
   const handleRename = () => {

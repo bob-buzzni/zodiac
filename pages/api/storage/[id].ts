@@ -49,13 +49,11 @@ class Handler {
         FROM "Storage"
         WHERE parent_id = ${id}
         UNION
-          SELECT s.id, s.parent_id, s.type, s.author_id, s.thumbnail, s.subject, s.description, s.content, s.tags, s.created_at, s.updated_at, t.depth + 1
+          SELECT s.id, s.parent_id, s.type, s.author_id, s.thumbnail, s.subject, s.description, s.content, s.tags, s.created_at, s.updated_at, h.depth + 1
           FROM "Storage" s
-          INNER JOIN hierarchy t ON s.parent_id = t.id
+          INNER JOIN hierarchy h ON s.parent_id = h.id
       )
-      SELECT *
-      FROM hierarchy
-      WHERE depth = 0
+      SELECT * FROM hierarchy WHERE depth = 0;
     `;
 
     return await DB.$queryRaw(Prisma.sql([query]));
