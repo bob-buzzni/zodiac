@@ -5,7 +5,7 @@ import styles from './Crud.module.css';
 import { FolderEvent, HistoryEvent } from '../../event';
 import { Node, createNode } from '~/utils/storage';
 import Context from '../../context';
-import { action$ } from '~/store';
+import { action$, exec$ } from '~/store';
 type PropsType = {};
 
 function Crud({}: PropsType) {
@@ -51,12 +51,18 @@ function Crud({}: PropsType) {
   const handleRename = () => {
     // * 첫번째 항목만 변경
     const [item] = state.selected;
-    const subject = prompt('이름 변경');
-    if (subject) {
-      axios.put(`/api/storage/${item.id}`, { subject }).then(() => {
+    const name = prompt('이름 변경');
+    if (name) {
+      axios.put(`/api/storage/${item.id}`, { name }).then(() => {
         history$.next({ type: HistoryEvent.RELOAD, data: { pid: state.pid } });
       });
     }
+  };
+
+  // * 파일 수정
+  const handleModify = () => {
+    const [node] = state.selected;
+    exec$.next({ app: 'text-editor', cmd: 'start', args: node });
   };
 
   // * 선택된 항목 전부 삭제
@@ -152,6 +158,19 @@ function Crud({}: PropsType) {
         onClick={handleCopy}
       >
         복사
+      </button>
+      <button
+        type="button"
+        className={styles.button}
+        disabled={
+          !(
+            state.selected.length < 2 &&
+            state.selected.every((v) => !v.isDirectory())
+          )
+        }
+        onClick={handleModify}
+      >
+        수정
       </button>
       <button
         type="button"

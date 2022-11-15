@@ -5,7 +5,7 @@ export type ExecType = {
   id: string;
   cmd: 'start' | 'stop';
   app: string;
-  args: string[];
+  args: any;
 };
 
 function random(): string {

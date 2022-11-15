@@ -37,6 +37,20 @@ export default function Shortcut() {
         />
         <span>{FOLDER!.subject}</span>
       </button>
+      <a
+        href="https://github.com/uznam8x/zodiac"
+        target="_blank"
+        type="button"
+        className={styles.button}
+      >
+        <img
+          src={'https://github.com/favicon.ico'}
+          alt={'github'}
+          width={48}
+          height={48}
+        />
+        <span>GITHUB</span>
+      </a>
     </div>
   );
 }

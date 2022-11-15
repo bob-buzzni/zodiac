@@ -22,5 +22,5 @@ export const getPlugin = (key: string) => {
 
 export default ({ exec }: PropsType): JSX.Element | null => {
   const app = getPlugin(exec.app);
-  return app ? app.component({ args: exec.args }) : null;
+  return (app && !!app.component) ? app.component({ args: exec.args }) : null;
 };
