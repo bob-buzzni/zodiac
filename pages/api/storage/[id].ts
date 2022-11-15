@@ -3,23 +3,20 @@ import * as R from 'ramda';
 
 const DB = new PrismaClient();
 
+import { IsIn, IsNotEmpty, IsString } from 'class-validator';
+import type { NextApiRequest } from 'next';
 import {
   Body,
   createHandler,
   Delete,
-  Get,
-  Post,
+  Get, HttpCode, Post,
   Put,
-  Req,
-  HttpCode,
-  ValidationPipe,
+  Req, ValidationPipe
 } from 'next-api-decorators';
-import { IsIn, IsNotEmpty, IsNumber, IsString } from 'class-validator';
-import type { NextApiRequest } from 'next';
 
 class Field {
   parent_id: number;
-  subject: string;
+  name: string;
   description: string;
   content: string;
   tags: string;
@@ -32,7 +29,7 @@ class Storage {
   type: string;
 
   @IsNotEmpty()
-  subject: string;
+  name: string;
 
   description: string = '';
   content: string = '';
@@ -49,11 +46,11 @@ class Handler {
     if (row.type === 'directory') {
       const query = `
       WITH RECURSIVE hierarchy AS (
-        SELECT id, parent_id, type, author_id, thumbnail, subject, description, content, tags, created_at, updated_at, 0 as depth
+        SELECT id, parent_id, type, author_id, thumbnail, name, description, content, tags, created_at, updated_at, 0 as depth
         FROM "Storage"
         WHERE parent_id = ${id}
         UNION
-          SELECT s.id, s.parent_id, s.type, s.author_id, s.thumbnail, s.subject, s.description, s.content, s.tags, s.created_at, s.updated_at, h.depth + 1
+          SELECT s.id, s.parent_id, s.type, s.author_id, s.thumbnail, s.name, s.description, s.content, s.tags, s.created_at, s.updated_at, h.depth + 1
           FROM "Storage" s
           INNER JOIN hierarchy h ON s.parent_id = h.id
       )
@@ -82,7 +79,7 @@ class Handler {
   async update(@Req() req: NextApiRequest, @Body(ValidationPipe) body: Field) {
     const { id } = req.query;
     const params = R.pick(
-      ['parent_id', 'subject', 'content', 'tags', 'thumbnail'],
+      ['parent_id', 'name', 'content', 'tags', 'thumbnail'],
       body
     );
     const data = params;

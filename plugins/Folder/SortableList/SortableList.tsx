@@ -52,7 +52,7 @@ const Item: any = SortableElement(({ node, onClick = () => {} }: ItemType) => {
         ? {}
         : { 'data-extension': (node as any).extension() })}
     >
-      <span>{node.subject}</span>
+      <span>{node.name}</span>
     </div>
   );
 });

@@ -27,7 +27,7 @@ async function main() {
   ];
 
   for (const item of record) {
-    const [id, type, status, copied_id, parent_id, thumbnail, subject, description, content, tags, author_id] = item as any;
+    const [id, type, status, copied_id, parent_id, thumbnail, name, description, content, tags, author_id] = item as any;
 
     await client.storage.upsert({
       where: {
@@ -40,7 +40,7 @@ async function main() {
         copied_id,
         status,
         thumbnail,
-        subject,
+        name,
         description,
         content,
         tags,

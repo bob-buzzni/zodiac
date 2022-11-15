@@ -16,7 +16,7 @@ function Crud({}: PropsType) {
   const { history$ } = useContext(Context);
 
   const create = (params: {
-    subject: string;
+    name: string;
     parent_id: number;
     type: 'file' | 'directory';
   }) => {
@@ -31,12 +31,12 @@ function Crud({}: PropsType) {
 
   // * 디렉토리 생성
   const handleCreateDirectory = () => {
-    create({ parent_id: state.pid, type: 'directory', subject: '무제' });
+    create({ parent_id: state.pid, type: 'directory', name: '무제' });
   };
 
   // * 파일 생성
   const handleCreateFile = () => {
-    create({ parent_id: state.pid, type: 'file', subject: '무제.txt' });
+    create({ parent_id: state.pid, type: 'file', name: '무제.txt' });
   };
 
   // * 선택된 항목 전체 복사

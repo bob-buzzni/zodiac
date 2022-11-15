@@ -1,4 +1,4 @@
-GET http://localhost:3000/api/storage
+GET http://localhost:3000/api/storage/1
 Content-Type: application/json
 
 {
@@ -36,7 +36,7 @@ Content-Type: application/json
 
 {
     "type": "file",
-    "subject":"cover.jpg"
+    "name":"cover.jpg"
 }
 
 ###
@@ -45,7 +45,7 @@ PUT http://localhost:3000/api/storage/2
 Content-Type: application/json
 
 {   
-    "subject": "데스크톱"
+    "name": "데스크톱"
 }
 
 ###

@@ -35,7 +35,7 @@ class Handler {
       'status',
       'type',
       'thumbnail',
-      'subject',
+      'name',
       'description',
       'content',
       'tags',

@@ -2,7 +2,6 @@ import { ExecType } from '../store';
 
 export type PluginType = {
   icon: string;
-  color: string;
   subject: string;
   description: string;
   component: (props: any) => JSX.Element;

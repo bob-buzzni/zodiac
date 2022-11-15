@@ -7,7 +7,7 @@ export default class File extends Node {
     return R.pipe(
       R.split('.'),
       R.last
-    )(this.subject)
+    )(this.name)
   }
   toJSON() {
     return R.pipe(

@@ -6,7 +6,7 @@ export default class Node {
   icon: string = '';
   parent_id!: number;
   thumbnail: string = '';
-  subject!: string;
+  name!: string;
   description: string = '';
   content: string = '';
   tags: string = '';

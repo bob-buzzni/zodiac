@@ -16,7 +16,7 @@ action$.subscribe((payload) => {
     const extension = R.pipe(
       R.split('.'),
       R.last
-    )(payload.data.subject) as string;
+    )(payload.data.name) as string;
     if (['jpg', 'png', 'gif'].includes(extension)) {
       exec$.next({ app: 'image-viewer', cmd: 'start', args: payload.data });
     }

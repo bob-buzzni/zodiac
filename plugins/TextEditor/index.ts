@@ -16,7 +16,7 @@ action$.subscribe((payload) => {
     const extension = R.pipe(
       R.split('.'),
       R.last
-    )(payload.data.subject) as string;
+    )(payload.data.name) as string;
     if (['txt'].includes(extension)) {
       exec$.next({ app: 'text-editor', cmd: 'start', args: payload.data });
     }
