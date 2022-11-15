@@ -38,14 +38,14 @@ function TextEditor({ args }: any) {
   useEffect(init, []);
   return (
     <div className={styles.container}>
-      {!!content ? (
+      {content === null ? null : (
         <textarea
           className={styles.textarea}
           name="content"
           defaultValue={content}
           onInput={handleChanged}
         ></textarea>
-      ) : null}
+      )}
     </div>
   );
 }
