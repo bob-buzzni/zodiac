@@ -41,24 +41,27 @@ class Handler {
   async index(@Req() req: NextApiRequest) {
     const { id } = req.query;
 
-    const row: any = await DB.storage.findFirst({ where: { id: Number(id) } });
+    const row: any = await DB.storage.findUnique({ where: { id: Number(id) } });
 
     if (row.type === 'directory') {
+
+      const columns = ['id', 'parent_id', 'type', 'author_id', 'thumbnail', 'name', 'description', 'tags', 'created_at', 'updated_at'];
       const query = `
       WITH RECURSIVE hierarchy AS (
-        SELECT id, parent_id, type, author_id, thumbnail, name, description, content, tags, created_at, updated_at, 0 as depth
+        SELECT ${columns.join(',')}, 0 as depth
         FROM "Storage"
         WHERE parent_id = ${id}
         UNION
-          SELECT s.id, s.parent_id, s.type, s.author_id, s.thumbnail, s.name, s.description, s.content, s.tags, s.created_at, s.updated_at, h.depth + 1
+          SELECT ${R.pipe(R.map(v => `s.${v}`),R.join(','))(columns)}, h.depth + 1
           FROM "Storage" s
           INNER JOIN hierarchy h ON s.parent_id = h.id
       )
-      SELECT * FROM hierarchy WHERE depth = 0;
+      SELECT ${columns.join(',')} FROM hierarchy WHERE depth = 0;
     `;
 
       return await DB.$queryRaw(Prisma.sql([query]));
     }
+    
     return row;
   }
 
@@ -78,7 +81,6 @@ class Handler {
   @Put()
   async update(@Req() req: NextApiRequest, @Body(ValidationPipe) body: Field) {
     const { id } = req.query;
-    console.log(body);
     const params = R.pick(
       ['parent_id', 'name', 'content', 'tags', 'thumbnail'],
       body
