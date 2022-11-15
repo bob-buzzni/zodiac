@@ -1,0 +1,6 @@
+[data-extension='link'] {
+    &::before {
+      background-image: url('/icons/web-browser.png');
+    }
+  }
+  
