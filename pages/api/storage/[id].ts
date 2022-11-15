@@ -78,6 +78,7 @@ class Handler {
   @Put()
   async update(@Req() req: NextApiRequest, @Body(ValidationPipe) body: Field) {
     const { id } = req.query;
+    console.log(body);
     const params = R.pick(
       ['parent_id', 'name', 'content', 'tags', 'thumbnail'],
       body
