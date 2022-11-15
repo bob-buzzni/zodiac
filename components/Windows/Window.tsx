@@ -20,7 +20,7 @@ type SizeType = {
   y: number;
 };
 
-const initialBound = { x: 0, y: 0, width: 480, height: 320 };
+const initialBound = { x: 0, y: 0, width: 640, height: 320 };
 const sessionState = '__FOLDER_STATE__';
 
 const getBound = () => {
@@ -75,7 +75,7 @@ export default function Window({ exec, children }: PropsType) {
       id={exec.id}
       className={clsx({ active: state.active })}
       dragHandleClassName={'titlebar'}
-      minWidth={482}
+      minWidth={642}
       minHeight={322}
       default={bound}
       bounds={'main'}
