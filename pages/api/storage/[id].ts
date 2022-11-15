@@ -43,7 +43,11 @@ class Handler {
   @Get()
   async index(@Req() req: NextApiRequest) {
     const { id } = req.query;
-    const query = `
+
+    const row: any = await DB.storage.findFirst({ where: { id: Number(id) } });
+
+    if (row.type === 'directory') {
+      const query = `
       WITH RECURSIVE hierarchy AS (
         SELECT id, parent_id, type, author_id, thumbnail, subject, description, content, tags, created_at, updated_at, 0 as depth
         FROM "Storage"
@@ -56,7 +60,9 @@ class Handler {
       SELECT * FROM hierarchy WHERE depth = 0;
     `;
 
-    return await DB.$queryRaw(Prisma.sql([query]));
+      return await DB.$queryRaw(Prisma.sql([query]));
+    }
+    return row;
   }
 
   @Post()
@@ -75,7 +81,10 @@ class Handler {
   @Put()
   async update(@Req() req: NextApiRequest, @Body(ValidationPipe) body: Field) {
     const { id } = req.query;
-    const params = R.pick(['parent_id', 'subject'], body);
+    const params = R.pick(
+      ['parent_id', 'subject', 'content', 'tags', 'thumbnail'],
+      body
+    );
     const data = params;
     return await DB.storage.update({
       where: {

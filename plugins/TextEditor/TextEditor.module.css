@@ -1,0 +1,6 @@
+.container {
+    @apply w-full h-full;
+}
+.textarea {
+    @apply w-full h-full;
+}

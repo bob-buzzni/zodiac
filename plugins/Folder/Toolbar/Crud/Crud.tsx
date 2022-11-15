@@ -21,10 +21,7 @@ function Crud({}: PropsType) {
     type: 'file' | 'directory';
   }) => {
     axios
-      .post(`/api/storage/${state.pid}`, {
-        type: 'directory',
-        subject: '무제',
-      })
+      .post(`/api/storage/${state.pid}`, params)
       .then((res) => res.data)
       .then((res) => {
         action$.next({ type: FolderEvent.ADDED, data: createNode(res) });
@@ -45,11 +42,9 @@ function Crud({}: PropsType) {
   // * 선택된 항목 전체 복사
   const handleCopy = () => {
     const ids = state.selected.map((node) => node.id);
-    axios
-      .post(`/api/storage`, { ids })
-      .then(() => {
-        history$.next({ type: HistoryEvent.RELOAD, data: { pid: state.pid } });
-      });
+    axios.post(`/api/storage`, { ids }).then(() => {
+      history$.next({ type: HistoryEvent.RELOAD, data: { pid: state.pid } });
+    });
   };
 
   // * 선택된 단일 항목 이름 변경
