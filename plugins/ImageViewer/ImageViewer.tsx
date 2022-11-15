@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import * as Rx from 'rxjs';
+import { fromFetch } from 'rxjs/fetch';
 import { Node } from '~/utils/storage';
 import styles from './ImageViewer.module.css';
 import './global.css';
@@ -13,10 +15,21 @@ function ImageViewer({ args }: any) {
   const [content, setContent] = useState<Partial<ImageType>>({});
 
   const init = () => {
-    try {
-      let data = JSON.parse(node.content);
-      setContent(data);
-    } catch (e) {}
+    const subscription = new Rx.Subscription();
+    subscription.add(
+      fromFetch(`/api/storage/${node.id}`, {
+        selector: (response) => response.json(),
+      })
+        .pipe(Rx.map((value) => value.content))
+        .subscribe((value) => {
+          try {
+            let data = JSON.parse(value);
+            setContent(data);
+          } catch (e) {
+            alert('파일 형식이 잘못 되었습니다.');
+          }
+        })
+    );
   };
   useEffect(init, []);
   return (
