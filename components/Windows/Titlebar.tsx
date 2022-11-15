@@ -30,7 +30,7 @@ function Titlebar({ exec, className = '' }: PropsType) {
           className={styles.close}
           onClick={handleClose}
         ></button>
-        <button
+        {/* TODO: <button
           type="button"
           className={styles.minimum}
           onClick={handleMinimum}
@@ -39,7 +39,7 @@ function Titlebar({ exec, className = '' }: PropsType) {
           type="button"
           className={styles.maximum}
           onClick={handleMaximum}
-        ></button>
+        ></button> */}
       </div>
     </div>
   );
