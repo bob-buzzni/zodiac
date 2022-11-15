@@ -10,6 +10,7 @@ import Toolbar from './Toolbar';
 import SortableList from './SortableList';
 import styles from './Folder.module.css';
 import Context, { HistoryType } from './context';
+import axios from 'axios';
 type PropsType = {
   args: string[];
 };
@@ -63,6 +64,7 @@ function Folder({ args }: PropsType) {
   const handleChanged = (moved: number[]) => {
     const [acc, cur] = moved;
     const res = R.move(acc, cur, record);
+    axios.put(`/api/storage/seq`, { ids: res.map((v) => v.id) });
     setRecord(() => res);
   };
 

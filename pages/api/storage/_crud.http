@@ -16,6 +16,15 @@ Content-Type: application/json
 
 ###
 
+// 정렬
+PUT http://localhost:3000/api/storage/seq
+Content-Type: application/json
+
+{
+    "ids":[4,3,2]
+}
+###
+
 DELETE http://localhost:3000/api/storage
 Content-Type: application/json
 

@@ -45,7 +45,7 @@ class Handler {
 
     if (row.type === 'directory') {
 
-      const columns = ['id', 'parent_id', 'type', 'author_id', 'thumbnail', 'name', 'description', 'tags', 'created_at', 'updated_at'];
+      const columns = ['id', 'parent_id', 'type', 'seq', 'author_id', 'thumbnail', 'name', 'description', 'tags', 'created_at', 'updated_at'];
       const query = `
       WITH RECURSIVE hierarchy AS (
         SELECT ${columns.join(',')}, 0 as depth
